@@ -6,12 +6,12 @@ export default class MDocument extends Document{
     {
         return(
             <Html>
-                <head>
+                <Head>
                     <link rel="preconnect" href="https://fonts.gstatic.com"/>
                     <link href="https://fonts.googleapis.com/css2?family=Inter&family=Lexend:wght@500;600&display=swap" rel="stylesheet" />
-                </head>
+                </Head>
                 <body>
-                    <main></main>
+                    <Main></Main>
                     <NextScript/>
                 </body>
             </Html>
