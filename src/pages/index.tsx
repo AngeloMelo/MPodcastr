@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next'
+import Link from 'next/link'
 import Image from 'next/image'
 import { format, parseISO } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
@@ -36,7 +37,9 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
         />
         
         <div className={styles.episodeDetails}>
-          <a href="">{ ep.title }</a>
+          <Link href={`/episode/${ep.id}`}>
+            <a>{ ep.title }</a>
+          </Link>
           <p>{ ep.members }</p>
           <span>{ ep.publishedAt }</span>
           <span>{ ep.durationAsString }</span>
@@ -63,12 +66,14 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
         <h2>Todos episódios</h2>
         <table cellSpacing={0}>
           <thead>
-            <th></th>
-            <th>Podcast</th>
-            <th>Integrantes</th>
-            <th>Data</th>
-            <th>Duração</th>
-            <th></th>
+            <tr>
+              <th></th>
+              <th>Podcast</th>
+              <th>Integrantes</th>
+              <th>Data</th>
+              <th>Duração</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             {otherEpisodes.map(ep =>{
@@ -83,7 +88,11 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
                       objectFit="cover"
                     />
                   </td>
-                  <td><a href="">{ep.title}</a></td>
+                  <td>
+                    <Link href={`/episode/${ep.id}`}>
+                      <a>{ep.title}</a>  
+                    </Link>
+                  </td>
                   <td>{ep.members}</td>
                   <td style={{ width: 100}}>{ep.publishedAt}</td>
                   <td>{ep.durationAsString}</td>
