@@ -6,6 +6,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 import { api } from '../services/api'
 import { convertDurationToTimeString } from '../utils/convertDurationToTimeString'
 import styles from './home.module.scss'
+import { usePlayer } from '../contexts/PlayerContext'
 
 type Episode = {
   id: string;
@@ -23,9 +24,14 @@ type HomeProps = {
   latestEpisodes: Array<Episode>;
   otherEpisodes:  Array<Episode>;
 }
+
 export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
 
-  const latestEpisodeField = latestEpisodes.map(ep => {
+  const { playList } = usePlayer()
+
+  const episodeList = [...latestEpisodes, ...otherEpisodes]
+
+  const latestEpisodeField = latestEpisodes.map((ep, index) => {
     return (
       <li key={ ep.id }>
         <Image
@@ -45,12 +51,10 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
           <span>{ ep.durationAsString }</span>
         </div>
 
-        <button type="button">
+        <button type="button" onClick={()=> playList(episodeList, index)}>
           <img src="/play-green.svg" alt="play episode"/>
         </button>
       </li>
-
-
     )
 })
   
@@ -62,9 +66,11 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
           { latestEpisodeField }
         </ul>
       </section>
+      
       <section className={styles.allEpisodes}>
         <h2>Todos episódios</h2>
-        <table cellSpacing={0}>
+        
+         <table cellSpacing={0}>
           <thead>
             <tr>
               <th></th>
@@ -76,7 +82,7 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
             </tr>
           </thead>
           <tbody>
-            {otherEpisodes.map(ep =>{
+            {otherEpisodes.map((ep, index) =>{
               return (
                 <tr key={ep.id}>
                   <td style={{ width: 72}}>
@@ -97,7 +103,9 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
                   <td style={{ width: 100}}>{ep.publishedAt}</td>
                   <td>{ep.durationAsString}</td>
                   <td>
-                    <button type="button">
+                    <button 
+                      type="button"
+                      onClick={()=> playList(episodeList, index + latestEpisodes.length)}>
                       <img src="/play-green.svg" alt="play"/>
                     </button>
                   </td>
@@ -105,7 +113,7 @@ export default function Home({latestEpisodes, otherEpisodes}: HomeProps) {
               )
             })}
           </tbody>
-        </table>
+        </table> 
       </section>
       
     </div>
